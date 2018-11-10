@@ -272,11 +272,11 @@ object Rule34Spec {
     @Prop showBlack: Boolean
   ): Component {</span>
     <span class="fragment" data-fragment-index="1">val builder = Column.create(context)</span>
-    <span class="fragment" data-fragment-index="2">builder.child(createItem(context, "Rule", white = true))</span>
+    <span class="fragment" data-fragment-index="2">builder.child(createItem(context, "Rule", white = true, key = "white-1"))</span>
     <span class="fragment" data-fragment-index="3">if (showBlack) {
-      builder.child(createItem(context, "¯\\_(ツ)_/¯", white = false))
+      builder.child(createItem(context, "¯\\_(ツ)_/¯", white = false, key = "black"))
     }</span>
-    <span class="fragment" data-fragment-index="2">builder.child(createItem(context, "34", white = true))</span>
+    <span class="fragment" data-fragment-index="2">builder.child(createItem(context, "34", white = true, key = "white-2"))</span>
     <span class="fragment" data-fragment-index="4">return builder.build()</span>
   <span class="fragment" data-fragment-index="0">}
 }</span>
@@ -288,11 +288,13 @@ object Rule34Spec {
   <span class="fragment" data-fragment-index="0">fun createItem(
     context: ComponentContext,
     title: String,
-    white: Boolean
+    white: Boolean,
+    key: String
   ): Component.Builder<*> {</span>
     <span class="fragment" data-fragment-index="1">return Rule34Item.create(context)
       .title(title)
       .white(white)</span>
+      <span class="fragment" data-fragment-index="2">.transitionKey(key)</span>
   <span class="fragment" data-fragment-index="0">}</span>
   					</code></pre>
 				</section>
