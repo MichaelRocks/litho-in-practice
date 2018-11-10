@@ -12,30 +12,31 @@
 
 
 // Include theme-specific fonts
-@import url(../../lib/font/source-sans-pro/source-sans-pro.css);
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:400,500|Roboto+Mono:400,500&amp;subset=cyrillic');
 
 
 // Override theme settings (see ../template/settings.scss)
 $backgroundColor: #fff;
 
-$mainColor: #222;
-$headingColor: #222;
+$mainColor: #2d2e44;
+$headingColor: #2d2e44;
 
 $mainFontSize: 42px;
-$mainFont: 'Source Sans Pro', Helvetica, sans-serif;
-$headingFont: 'Source Sans Pro', Helvetica, sans-serif;
+$mainFont: 'Roboto', Helvetica, sans-serif;
+$headingFont: 'Roboto Condensed', Helvetica, sans-serif;
 $headingTextShadow: none;
-$headingLetterSpacing: normal;
-$headingTextTransform: uppercase;
-$headingFontWeight: 600;
-$linkColor: #2a76dd;
+$headingLetterSpacing: -2px;
+$headingTextTransform: none;
+$headingFontWeight: 700;
+$linkColor: #27c278;
 $linkColorHover: lighten( $linkColor, 15% );
 $selectionBackgroundColor: lighten( $linkColor, 25% );
+$codeFont: 'Roboto Mono', Courier, monospace;
 
-$heading1Size: 2.5em;
-$heading2Size: 1.6em;
-$heading3Size: 1.3em;
-$heading4Size: 1.0em;
+$heading1Size: 70px;
+$heading2Size: 60px;
+$heading3Size: 50px;
+$heading4Size: 45px;
 
 section.has-dark-background {
 	&, h1, h2, h3, h4, h5, h6 {
@@ -43,6 +44,15 @@ section.has-dark-background {
 	}
 }
 
+section .code {
+	font-family: $codeFont;
+	font-weight: 400;
+
+	&-strong {
+		font-family: $codeFont;
+		font-weight: 500;
+	}
+}
 
 // Theme template ------------------------------
 @import "../template/theme";

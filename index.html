@@ -4,13 +4,13 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Litho на практике</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/white.css">
 
 		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link rel="stylesheet" href="lib/css/idea.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -24,8 +24,498 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section class="centered">
+					<div class="title-container">
+						<h2 class="title-container-title">Litho на практике</h2>
+						<div class="title-container-subtitle">Михаил Розумянский, Joom</div>
+					</div>
+				</section>
+				<section>
+					<h1>Жизненный цикл View</h1>
+					<img class="plain" src="graphics/view-lifecycle.svg" />
+				</section>
+				<section>
+					<h1>Как ускорить?</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Оптимизация<br />кода</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Асинхронное<br />выполнение</p>
+						</div>
+						<div class="fragment bubble" style="background: #ff7676;">
+							<p style="font-size: 80%; line-height: 1.1;">Без ощутимой<br />деградации</p>
+						</div>
+					</div>
+				</section>
+				<section>
+					<h1>Внутри Inflate</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble">
+							<p>Парсинг<br />XML</p>
+						</div>
+						<div class="fragment bubble">
+							<p>Создание<br />View</p>
+						</div>
+						<div class="fragment bubble">
+							<p>Загрузка<br />ресурсов</p>
+						</div>
+					</div>
+				</section>
+				<section>
+					<p class="code" style="font-weight: 500; font-size: 70px; margin: 0 0 20px 0;">AsyncLayoutInflater</p>
+					<img class="plain" style="margin: unset; width: 700px" src="graphics/async-layout-inflater.svg" />	
+				</section>
+				<section>
+					<h1>Медленный Measure</h1>
+					<div class="bubble-container" style="height: 200px;">
+						<div class="fragment bubble" style="width: 320px">
+							<p style="font-size: 80%; line-height: 1.1;"><span class="code-strong">TextView</span> создаёт <span class="code-strong">Layout</span></p>
+						</div>
+						<div class="fragment bubble" style="width: 320px">
+							<p style="font-size: 80%; line-height: 1.1;">Контейнеры вызывают <span class="code-strong">measure()</span> дважды</p>
+						</div>
+					</div>
+				</section>
+				<section>
+					<div style="display: inline-block;">
+						<h1>Ускоряем <span class="code-strong">TextView</span></h1>
+						<h5 style="text-align: left; margin-top: -20px; color: #9697a1;">Google way</h5>
+					</div>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble" style="width: 360px">
+							<p style="font-size: 80%; line-height: 1.1;">Создаём <span class="code-strong">PrecomputedText</span> асинхронно</p>
+						</div>
+						<div class="fragment bubble" style="width: 360px">
+							<p style="font-size: 80%; line-height: 1.1;">Устанавливаем <span class="code-strong">PrecomputedText</span> в <span class="code-strong">TextView</span></p>
+						</div>
+					</div>
+				</section>
+				<section>
+					<div style="display: inline-block;">
+						<h1>Ускоряем <s><span class="code-strong">TextView</span></s></h1>
+						<h5 style="text-align: left; margin-top: -20px; color: #9697a1;">Hardcore way</h5>
+					</div>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble" style="width: 320px">
+							<p style="font-size: 80%; line-height: 1.1;">Создаём <span class="code-strong">Layout</span> асинхронно</p>
+						</div>
+						<div class="fragment bubble" style="width: 320px">
+							<p style="font-size: 80%; line-height: 1.1;">Рисуем <span class="code-strong">Layout</span> сами</p>
+						</div>
+					</div>
+				</section>
+				<section>
+					<div style="display: inline-block;">
+						<h1>Ускоряем ли?</h1>
+						<h5 style="text-align: left; margin-top: -20px; color: #9697a1;">Всё в одной View</h5>
+					</div>
+					<br />
+					<img class="plain" style="margin: unset; width: 480px" src="graphics/manual-drawing.svg" />	
+				</section>
+				<section>
+					<h1>Замедляем</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Анимируется прогресс</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Отрисовка каждый фрейм</p>
+						</div>
+						<div class="fragment bubble" style="background: #ff7676;">
+							<p style="font-size: 80%; line-height: 1.1;">Рисуется <strong>всё</strong>!</p>
+						</div>
+					</div>
+				</section>
+				<section>
+					<h1>Display Lists</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Создаются стандартными виджетами</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Кешируют команды отрисовки</p>
+						</div>
+						<div class="fragment bubble" style="background: #ff7676;">
+							<p style="font-size: 80%; line-height: 1.1;">Являются приватным API</p>
+						</div>
+					</div>
+				</section>
+				<section>
+					<h1>Ускоряем контейнеры</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble" style="width: 360px">
+							<p style="font-size: 80%; line-height: 1.1;">Пишем свои контейнеры</p>
+						</div>
+						<div class="fragment bubble" style="width: 360px">
+							<p style="font-size: 80%; line-height: 1.1;">Используем <span class="code-strong">Constraint Layout</span><sup style="position: absolute;">*</sup></p>
+						</div>
+					</div>
+				</section>
+				<section class="centered">
+					<h1>А при чём здесь Litho?</h1>
+				</section>
+				<section>
+					<h1>Facebook уже всё сделал</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Litho</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Yoga</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Text Layout Builder</p>
+						</div>
+					</div>
+				</section>
+				<section class="centered">
+					<h1 style="font-weight: 400;"><strong>UI</strong> = <i>ƒ</i> (<code>@Props</code>, <code>@State</code>)</h1>
+				</section>
+				<section>
+					<div style="display: inline-block;">
+						<h1>Компоненты</h1>
+						<h5 style="text-align: left; margin-top: -20px; color: #9697a1;">Как в React</h5>
+					</div>
+					<img class="plain" style="margin: unset; width: 700px" src="graphics/litho-specs.svg" />	
+				</section>
+				<section>
+					<h1>APT процессор</h1>
+					<img class="plain" style="margin: unset; width: 700px" src="graphics/litho-apt.svg" />	
+				</section>
+				<section>
+					<p class="code" style="font-weight: 500; font-size: 70px; margin: 0 0 20px 0;">@LayoutSpec</p>
+					<img class="plain" style="margin: unset; width: 700px" src="graphics/litho-layout-spec.svg" />	
+				</section>
+				<section>
+					<p class="code" style="font-weight: 500; font-size: 70px; margin: 0 0 20px 0;">@MountSpec</p>
+					<img class="plain" style="margin: unset; width: 700px" src="graphics/litho-mount-spec.svg" />	
+				</section>
+				<section>
+					<h1>Стандартные компоненты</h1>
+					<ul class="cloud" style="font-size: 50%;">
+						<li>Row</li>
+						<li>Column</li>
+						<li>Text</li>
+						<li>Image</li>
+						<li>SolidColor</li>
+						<li>EditText</li>
+						<li>Progress</li>
+						<li>HorizontalScroll</li>
+						<li>VerticalScroll</li>
+						<li>Spinner</li>
+						<li>Card</li>
+					</ul>
+				</section>
+				<section>
+					<h1>Асинхронные операции</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Создание дерева компонент</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Загрузка ресурсов</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">measure<br />и<br />layout</p>
+						</div>
+					</div>
+				</section>
+				<section>
+					<h1>Другие оптимизации</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Incremental mount</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Примитивы вместо View</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Отрисовка в display list</p>
+						</div>
+					</div>
+				</section>
+				<section class="centered">
+					<h1>Ну, покажи уже код!</h1>
+				</section>
+				<section>
+					<h1>Rule 34</h1>
+					<video width="600" data-autoplay loop>
+						<source src="graphics/rule-34.mp4" type="video/mp4" />
+					</video>
+				</section>
+				<section>
+					<h1>Spec для элемента</h1>
+					<pre style="font-size: 15px"><code class="hljs kotlin">
+@LayoutSpec(isPureRender = true)
+object Rule34ItemSpec {
+  @OnCreateLayout
+  fun onCreateLayout(
+    context: ComponentContext,
+    @Prop white: Boolean,
+    @Prop(resType = ResType.STRING) title: CharSequence
+  ): Component {
+    return Text.create(context)
+      .backgroundColor(if (white) Color.WHITE else Color.BLACK)
+      .text(title)
+      .textColor(if (white) Color.BLACK else Color.WHITE)
+      .build()
+  }
+}
+					</code></pre>
+				</section>
+				<section>
+					<h1>Spec для контейнера</h1>
+					<pre style="font-size: 15px"><code class="hljs kotlin">
+@LayoutSpec(isPureRender = true)
+object Rule34Spec {
+  @OnCreateLayout
+  fun onCreateLayout
+    context: ComponentContext,
+    @Prop showBlack: Boolean
+  ): Component {
+    val builder = Column.create(context)
+    builder.child(createItem(context, "Rule", white = true))
+    if (showBlack) {
+      builder.child(createItem(context, "¯\\_(ツ)_/¯", white = false))
+    }
+    builder.child(createItem(context, "34", white = true))
+    return builder.build()
+  }
+}
+					</code></pre>
+				</section>
+				<section>
+					<h1><code>createItem()</code></h1>
+					<pre><code class="hljs kotlin">
+  fun createItem(
+    context: ComponentContext,
+    title: String,
+    white: Boolean
+  ): Component.Builder<*> {
+    return Rule34Item.create(context)
+      .title(title)
+      .white(white)
+  }
+  					</code></pre>
+				</section>
+				<section>
+					<h1>Внутри&ensp;<code>Activity</code></h1>
+					<pre style="font-size: 18px"><code class="hljs kotlin">
+  private lateinit var lithoView: LithoView
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    context = ComponentContext(this)
+    lithoView = LithoView(context)
+    setContentView(lithoView)
+
+    updateComponent(showBlack = false)
+  }
+					</code></pre>
+				</section>
+				<section>
+					<h1><code>createComponent()</code></h1>
+					<pre><code class="hljs kotlin">
+  fun updateComponent(
+    context: ComponentContext,
+    showBlack: Boolean
+  ): Component {
+    val component = Rule34.create(context)
+      .title(title)
+      .showBlack(showBlack)
+      .build()
+    lithoView.setComponentAsync(component)
+  }
+  					</code></pre>
+				</section>
+				<section class="centered">
+					<h1>Так, а где анимация?</h1>
+				</section>
+				<section>
+					<h1>Внутри&ensp;<code>Rule34Spec</code></h1>
+					<pre style="font-size: 15px"><code class="hljs kotlin">
+  @OnCreateTransition
+  fun onCreateTransition(
+    context: ComponentContext,
+    @Prop showBlack: Boolean
+  ): Transition {
+    val whiteTransition = Transition.create("white-1", "white-2")
+      .animate(AnimatedProperties.Y)
+    val blackTransition = Transition.create("black")
+      .animate(AnimatedProperties.X)
+      .appearFrom(DimensionValue.widthPercentageOffset(-100f))
+      .disappearTo(DimensionValue.widthPercentageOffset(-100f))
+
+    return if (showBlack) {
+      Transition.sequence(whiteTransition, blackTransition)
+    } else {
+      Transition.sequence(blackTransition, whiteTransition)
+    }
+  }
+					</code></pre>
+				</section>
+				<section>
+					<h1>Изменение дерева компонентов</h1>
+					<img class="plain" src="graphics/component-trees.svg" style="width: 700px;" />
+				</section>
+				<section class="centered">
+					<h1>И никаких проблем?</h1>
+				</section>
+				<section class="centered">
+					<h1>Конечно</h1>
+					<h1 class="fragment">(нет)</h1>
+				</section>
+				<section class="centered">
+					<h1>Litho — это фреймворк</h1>
+				</section>
+				<section>
+					<h1>Моя борьба</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Компоненты не расширяемы</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Нельзя поменять сравнение</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Отсутствует<sup>*</sup> жизненный цикл</p>
+						</div>
+					</div>
+				</section>
+				<section>
+					<h1>Имитация жизненного цикла</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble" style="width: 360px">
+							<p class="code-strong" style="font-size: 80%; line-height: 1.1;">VisibleEvent</p>
+						</div>
+						<div class="fragment bubble" style="width: 360px">
+							<p class="code-strong" style="font-size: 80%; line-height: 1.1;">InvisibleEvent</p>
+						</div>
+					</div>
+				</section>
+				<section>
+					<h1>Если что — сделаю View</h1>
+					<img class="fragment plain" src="graphics/cannot-measure.jpg" style="width: 600px;" />
+				</section>
+				<section>
+					<h1>Ожидание</h1>
+					<img class="plain" style="margin: unset; width: 480px;" src="graphics/manual-drawing.svg" />
+				</section>
+				<section>
+					<h1>Реальность</h1>
+					<img class="plain" style="margin: unset; width: 480px;" src="graphics/incremental-mount-issue.svg" />
+				</section>
+				<section class="centered">
+					<h1>В любой непонятной ситуации</h1>
+					<pre style="font-size: 30px"><code class="hljs kotlin">LithoView.performIncrementalMount()</code></pre>
+				</section>
+				<section>
+					<h1>Проброс Props</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Явно</p>
+						</div>
+						<div class="fragment bubble">
+							<p class="code-strong" style="font-size: 80%; line-height: 1.1;">@TreeProp</p>
+						</div>
+						<div class="fragment bubble">
+							<p class="code-strong" style="font-size: 80%; line-height: 1.1;">@InjectProp</p>
+						</div>
+					</div>
+				</section>
+				<section>
+					<h1>Явный проброс <span class="code-strong">@Prop</span></h1>
+					<img class="plain" style="margin: unset; width: 700px" src="graphics/explicit-props.svg" />	
+				</section>
+				<section>
+					<h1><span class="code-strong">@TreeProp</span></h1>
+					<img class="plain" style="margin: unset; width: 700px" src="graphics/tree-props.svg" />	
+				</section>
+				<section>
+					<div style="display: inline-block;">
+						<h1 style="text-align: left;"><code>@InjectProp</code></h1>
+						<h5 style="text-align: left; margin-top: -20px; color: #9697a1;">Поддерживаемые DI фреймворки</h5>
+					</div>
+				</section>
+				<section class="centered">
+					<h1>Документация?</h1>
+					<h1 class="fragment">Нет, не слышал</h1>
+				</section>
+				<section>
+					<h1>Полезные ссылки</h1>
+					<ul style="font-size: 50%;">
+						<li>
+							<a href="https://fblitho.com">https://fblitho.com</a>
+						</li>
+						<li>
+							View performance deep dive
+							<br />
+							<a href="https://youtu.be/ILtVu2EC6Ec">https://youtu.be/ILtVu2EC6Ec</a>
+						</li>
+						<li>
+							Litho: A Declarative Framework for Efficient UIs
+							<br />
+							<a href="https://developers.facebook.com/FacebookforDevelopers/videos/10154614569978553">https://developers.facebook.com/FacebookforDevelopers/videos/10154614569978553</a>
+						</li>
+						<li>
+							Litho: A Declarative UI Framework for Android
+							<br />
+							<a href="https://youtu.be/uzCK4Vnme7o">https://youtu.be/uzCK4Vnme7o</a>
+						</li>
+						<li>
+							Multi-threaded Rendering on Android (with Litho & Infer)
+							<br />
+							<a href="https://youtu.be/YLFusYyehxQ">https://youtu.be/YLFusYyehxQ</a>
+						</li>
+						<li>
+							Video In News Feed Using Litho 
+							<br />
+							<a href="https://www.facebook.com/facebooknyc/videos/10155425215188651">https://www.facebook.com/facebooknyc/videos/10155425215188651</a>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h1>Что мы получили</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Ускорение UI</p>
+						</div>
+						<div class="fragment bubble">
+							<p style="font-size: 80%; line-height: 1.1;">Простой код</p>
+						</div>
+						<div class="fragment bubble" style="background: #ff7676;">
+							<p style="font-size: 80%; line-height: 1.1;">+800 KB</p>
+						</div>
+					</div>
+				</section>
+				<section class="centered">
+					<h1 style="color: #9697a1;">&lt;Название фреймворка&gt;</h1>
+					<h1 style="font-weight: 400">не решит <span style="font-weight: 700">всех</span> ваших проблем!</h1>
+				</section>
+				<section class="centered">
+					<img class="plain" src="graphics/joom-heart-u.svg" />
+				</section>
+				<section>
+					<h1>Спасибо за внимание!</h1>
+					<div class="bubble-container" style="height: 160px;">
+						<div class="bubble" style="background: transparent;">
+							<p style="font-size: 80%; line-height: 1.1;">
+								<img class="plain" style="width: 100px; height: 100px;" src="graphics/github.svg" />
+								<br />
+								<a style="color: #2d2e44" href="https://github.com/MichaelRocks">MichaelRocks</a>
+							</p>
+						</div>
+						<div class="bubble" style="background: transparent;">
+							<p style="font-size: 80%; line-height: 1.1;">
+								<img class="plain" style="width: 100px; height: 100px;" src="graphics/telegram.svg" />
+								<br />
+								<a style="color: #2d2e44" href="https://t.me/michaelrocks">@michaelrocks</a>
+							</p>
+						</div>
+					</div>
+				</section>
 			</div>
 		</div>
 
@@ -37,6 +527,16 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				width: 960,
+				height: 540,
+				controls: true,
+				progress: true,
+				history: true,
+				center: false,
+				slideNumber: 'h/v',
+				backgroundTransition: 'zoom',
+				pdfMaxPagesPerSlide: 1,
+
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },

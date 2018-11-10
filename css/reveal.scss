@@ -558,15 +558,16 @@ $controlsArrowAngleActive: 36deg;
 .reveal .slide-number {
 	position: absolute;
 	display: block;
-	right: 8px;
-	bottom: 8px;
+	left: 16px;
+	bottom: 16px;
 	z-index: 31;
-	font-family: Helvetica, sans-serif;
-	font-size: 12px;
+	font-size: 24px;
 	line-height: 1;
 	color: #fff;
-	background-color: rgba( 0, 0, 0, 0.4 );
-	padding: 5px;
+	background-color: #27c278;
+	padding: 16px;
+	border-radius: 8px;
+	opacity: 0.3;
 }
 
 .reveal .slide-number a {
@@ -1627,8 +1628,8 @@ $controlsArrowAngleActive: 36deg;
 	backface-visibility: hidden;
 }
 	.reveal .roll:hover span {
-	    background: rgba(0,0,0,0.5);
-	    transform: translate3d( 0px, 0px, -45px ) rotateX( 90deg );
+		background: rgba(0,0,0,0.5);
+		transform: translate3d( 0px, 0px, -45px ) rotateX( 90deg );
 	}
 .reveal .roll span:after {
 	content: attr(data-title);
@@ -1761,4 +1762,74 @@ $controlsArrowAngleActive: 36deg;
 
 .zoomed .reveal .roll span:after {
 	visibility: hidden;
+}
+
+/*********************************************
+ * CUSTOM STYLES
+ *********************************************/
+
+.reveal .slides section.centered {
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.title-container {
+	display: inline-block;
+
+	&-title {
+		font-size: 200% !important;
+	}
+
+	&-subtitle {
+		text-align: right;
+		font-size: 75% !important;
+	}
+}
+
+.bubble {
+	display: inline-block;
+	position: relative;
+	background: #27c278;
+	border-radius: 40px;
+	margin: 40px 20px !important;
+	padding: 30px 30px;
+
+	width: 260px; 
+	height: 100%;
+}
+
+.bubble p {
+	margin: 0 !important;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+}
+
+.cloud {
+	display: inline-flex !important;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-content: center;
+	list-style-type: none;
+	width: 400px;
+}
+
+.cloud li {
+	list-style: none;
+	display: inline;
+	margin: 0px 10px;
+}
+
+.cloud li:nth-of-type(3n + 1) {
+	font-size: 150%;
+}
+
+.cloud li:nth-of-type(4n + 3) {
+	font-size: 200%;
+}
+
+.cloud li:nth-of-type(5n - 3) {
+	font-size: 250%;
 }
