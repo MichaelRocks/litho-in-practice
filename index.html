@@ -243,88 +243,88 @@
 				</section>
 				<section>
 					<h1>Spec для элемента</h1>
-					<pre style="font-size: 15px"><code class="hljs kotlin">
-@LayoutSpec(isPureRender = true)
-object Rule34ItemSpec {
-  @OnCreateLayout
-  fun onCreateLayout(
-    context: ComponentContext,
-    @Prop white: Boolean,
-    @Prop(resType = ResType.STRING) title: CharSequence
-  ): Component {
-    return Text.create(context)
-      .backgroundColor(if (white) Color.WHITE else Color.BLACK)
+					<pre style="font-size: 15px"><code class="hljs kotlin highlight-code" data-noescape>
+<span class="fragment" data-fragment-index="1">@LayoutSpec(isPureRender = true)</span>
+<span class="fragment" data-fragment-index="0">object Rule34ItemSpec {</span>
+  <span class="fragment" data-fragment-index="3">@OnCreateLayout</span>
+  <span class="fragment" data-fragment-index="2">fun onCreateLayout(</span>
+    <span class="fragment" data-fragment-index="4">context: ComponentContext,</span>
+    <span class="fragment" data-fragment-index="5">@Prop white: Boolean,
+    @Prop(resType = ResType.STRING) title: CharSequence</span>
+  <span class="fragment" data-fragment-index="2">): Component {</span>
+    <span class="fragment" data-fragment-index="6">return Text.create(context)</span>
+      <span class="fragment" data-fragment-index="7">.backgroundColor(if (white) Color.WHITE else Color.BLACK)
       .text(title)
-      .textColor(if (white) Color.BLACK else Color.WHITE)
-      .build()
-  }
-}
+      .textColor(if (white) Color.BLACK else Color.WHITE)</span>
+      <span class="fragment" data-fragment-index="8">.build()</span>
+  <span class="fragment" data-fragment-index="2">}</span>
+<span class="fragment" data-fragment-index="0">}</span>
 					</code></pre>
 				</section>
 				<section>
 					<h1>Spec для контейнера</h1>
-					<pre style="font-size: 15px"><code class="hljs kotlin">
-@LayoutSpec(isPureRender = true)
+					<pre style="font-size: 15px"><code class="hljs kotlin highlight-code" data-noescape>
+<span class="fragment" data-fragment-index="0">@LayoutSpec(isPureRender = true)
 object Rule34Spec {
   @OnCreateLayout
   fun onCreateLayout
     context: ComponentContext,
     @Prop showBlack: Boolean
-  ): Component {
-    val builder = Column.create(context)
-    builder.child(createItem(context, "Rule", white = true))
-    if (showBlack) {
+  ): Component {</span>
+    <span class="fragment" data-fragment-index="1">val builder = Column.create(context)</span>
+    <span class="fragment" data-fragment-index="2">builder.child(createItem(context, "Rule", white = true))</span>
+    <span class="fragment" data-fragment-index="3">if (showBlack) {
       builder.child(createItem(context, "¯\\_(ツ)_/¯", white = false))
-    }
-    builder.child(createItem(context, "34", white = true))
-    return builder.build()
-  }
-}
+    }</span>
+    <span class="fragment" data-fragment-index="2">builder.child(createItem(context, "34", white = true))</span>
+    <span class="fragment" data-fragment-index="4">return builder.build()</span>
+  <span class="fragment" data-fragment-index="0">}
+}</span>
 					</code></pre>
 				</section>
 				<section>
 					<h1><code>createItem()</code></h1>
-					<pre><code class="hljs kotlin">
-  fun createItem(
+					<pre><code class="hljs kotlin highlight-code" data-noescape>
+  <span class="fragment" data-fragment-index="0">fun createItem(
     context: ComponentContext,
     title: String,
     white: Boolean
-  ): Component.Builder<*> {
-    return Rule34Item.create(context)
+  ): Component.Builder<*> {</span>
+    <span class="fragment" data-fragment-index="1">return Rule34Item.create(context)
       .title(title)
-      .white(white)
-  }
+      .white(white)</span>
+  <span class="fragment" data-fragment-index="0">}</span>
   					</code></pre>
 				</section>
 				<section>
 					<h1>Внутри&ensp;<code>Activity</code></h1>
-					<pre style="font-size: 18px"><code class="hljs kotlin">
-  private lateinit var lithoView: LithoView
+					<pre style="font-size: 18px"><code class="hljs kotlin highlight-code" data-noescape>
+  <span class="fragment" data-fragment-index="0">private lateinit var lithoView: LithoView</span>
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+  <span class="fragment" data-fragment-index="1">override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)</span>
 
-    context = ComponentContext(this)
-    lithoView = LithoView(context)
-    setContentView(lithoView)
+    <span class="fragment" data-fragment-index="2">context = ComponentContext(this)</span>
+    <span class="fragment" data-fragment-index="3">lithoView = LithoView(context)</span>
+    <span class="fragment" data-fragment-index="4">setContentView(lithoView)</span>
 
-    updateComponent(showBlack = false)
-  }
+    <span class="fragment" data-fragment-index="5">updateComponent(showBlack = false)</span>
+  <span class="fragment" data-fragment-index="1">}</span>
 					</code></pre>
 				</section>
 				<section>
 					<h1><code>createComponent()</code></h1>
-					<pre><code class="hljs kotlin">
-  fun updateComponent(
+					<pre><code class="hljs kotlin highlight-code" data-noescape>
+  <span class="fragment" data-fragment-index="0">fun updateComponent(
     context: ComponentContext,
     showBlack: Boolean
-  ): Component {
-    val component = Rule34.create(context)
+  ): Component {</span>
+    <span class="fragment" data-fragment-index="1">val component = Rule34.create(context)
       .title(title)
       .showBlack(showBlack)
-      .build()
-    lithoView.setComponentAsync(component)
-  }
+      .build()</span>
+    <span class="fragment" data-fragment-index="2">lithoView.setComponentAsync(component)</span>
+  <span class="fragment" data-fragment-index="0">}</span>
   					</code></pre>
 				</section>
 				<section class="centered">
@@ -332,25 +332,25 @@ object Rule34Spec {
 				</section>
 				<section>
 					<h1>Внутри&ensp;<code>Rule34Spec</code></h1>
-					<pre style="font-size: 15px"><code class="hljs kotlin">
-  @OnCreateTransition
-  fun onCreateTransition(
-    context: ComponentContext,
-    @Prop showBlack: Boolean
-  ): Transition {
-    val whiteTransition = Transition.create("white-1", "white-2")
-      .animate(AnimatedProperties.Y)
-    val blackTransition = Transition.create("black")
-      .animate(AnimatedProperties.X)
-      .appearFrom(DimensionValue.widthPercentageOffset(-100f))
-      .disappearTo(DimensionValue.widthPercentageOffset(-100f))
+					<pre style="font-size: 15px"><code class="hljs kotlin highlight-code" data-noescape>
+  <span class="fragment" data-fragment-index="1">@OnCreateTransition</span>
+  <span class="fragment" data-fragment-index="0">fun onCreateTransition(</span>
+    <span class="fragment" data-fragment-index="2">context: ComponentContext,
+    @Prop showBlack: Boolean</span>
+  <span class="fragment" data-fragment-index="0">): Transition {</span>
+    <span class="fragment" data-fragment-index="3">val whiteTransition = Transition.create("white-1", "white-2")
+      .animate(AnimatedProperties.Y)</span>
+    <span class="fragment" data-fragment-index="4">val blackTransition = Transition.create("black")
+      .animate(AnimatedProperties.X)</span>
+      <span class="fragment" data-fragment-index="5">.appearFrom(DimensionValue.widthPercentageOffset(-100f))
+      .disappearTo(DimensionValue.widthPercentageOffset(-100f))</span>
 
-    return if (showBlack) {
+    <span class="fragment" data-fragment-index="6">return if (showBlack) {
       Transition.sequence(whiteTransition, blackTransition)
     } else {
       Transition.sequence(blackTransition, whiteTransition)
-    }
-  }
+    }</span>
+  <span class="fragment" data-fragment-index="0">}</span>
 					</code></pre>
 				</section>
 				<section>

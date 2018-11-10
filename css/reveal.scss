@@ -1833,3 +1833,22 @@ $controlsArrowAngleActive: 36deg;
 .cloud li:nth-of-type(5n - 3) {
 	font-size: 250%;
 }
+
+code.highlight-code {
+	.unimportant {
+		opacity: 0.5;
+	}
+	
+	.fragment {
+		opacity: 0.5;
+		visibility: inherit;
+
+		&.visible {
+			opacity: 1.0;
+		}
+		
+		&.current-fragment {
+			font-weight: 500;
+		}
+	}
+}

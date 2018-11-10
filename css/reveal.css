@@ -1495,3 +1495,14 @@ body {
 
 .cloud li:nth-of-type(5n - 3) {
   font-size: 250%; }
+
+code.highlight-code .unimportant {
+  opacity: 0.5; }
+
+code.highlight-code .fragment {
+  opacity: 0.5;
+  visibility: inherit; }
+  code.highlight-code .fragment.visible {
+    opacity: 1.0; }
+  code.highlight-code .fragment.current-fragment {
+    font-weight: 500; }
