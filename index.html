@@ -299,7 +299,8 @@ object Rule34Spec {
 				<section>
 					<h1>Внутри&ensp;<code>Activity</code></h1>
 					<pre style="font-size: 18px"><code class="hljs kotlin highlight-code" data-noescape>
-  <span class="fragment" data-fragment-index="0">private lateinit var lithoView: LithoView</span>
+  <span class="fragment" data-fragment-index="0">private lateinit var context: ComponentContext
+  private lateinit var lithoView: LithoView</span>
 
   <span class="fragment" data-fragment-index="1">override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)</span>
